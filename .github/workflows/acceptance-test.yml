@@ -1,13 +1,14 @@
 ---
 name: "Acceptance Test"
 on:
-  pull_request:
-    types: [labeled]
+  push:
+    branches:
+      - "dev/upgrade-django"
 jobs:
   test:
-    if: github.event.label.name == 'AMAUAT'
     name: "Test ${{ matrix.tag }} ${{ matrix.python_version }} on ${{ matrix.browser }}"
     runs-on: "ubuntu-18.04"
+    continue-on-error: true
     strategy:
       matrix:
         tag:
@@ -25,7 +26,6 @@ jobs:
           - "Firefox"
           - "Chrome"
         python_version:
-          - "python2"
           - "python3"
         exclude:
           - tag: "black-box"
